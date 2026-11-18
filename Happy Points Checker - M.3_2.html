@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Points Checker - M.3/2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fff3e2;--bg2:#ffe0b8;--dot1:#ffd3a0;--dot2:#ffe6c4;--card:#fffaf0;--text:#3b2a1a;--muted:#8a6a4a;--accent:#f57c00;--accent-dark:#b85600;--accent-text:#ffffff;--border:#ffd199;--err:#c0392b;--title:#e65100;--title-shadow:#ffffff;--sub:#7a4a1c;--s1:#ff7a00;--s2:#ffe2b8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#3a1d08;--bg2:#2a1405;--dot1:#4a2810;--dot2:#55300f;--card:#3a2210;--text:#ffeedd;--muted:#d9a76c;--accent:#ffa033;--accent-dark:#c26a00;--accent-text:#2a1408;--border:#6b4220;--err:#ff8a7a;--title:#ffb347;--title-shadow:#1a0c03;--sub:#e0b27a;--s1:#c25b00;--s2:#6b4220}}
+:root[data-theme="dark"]{--bg1:#3a1d08;--bg2:#2a1405;--dot1:#4a2810;--dot2:#55300f;--card:#3a2210;--text:#ffeedd;--muted:#d9a76c;--accent:#ffa033;--accent-dark:#c26a00;--accent-text:#2a1408;--border:#6b4220;--err:#ff8a7a;--title:#ffb347;--title-shadow:#1a0c03;--sub:#e0b27a;--s1:#c25b00;--s2:#6b4220}
+html,body{margin:0;color:var(--text);font-family:"Nunito","Noto Sans Thai","Trebuchet MS",system-ui,-apple-system,sans-serif;overflow-x:hidden}
+html{background:var(--bg2)}
+body{min-height:100vh;display:flex;justify-content:center;padding:18px 16px 40px;position:relative;
+background-color:var(--bg2);
+background-image:radial-gradient(var(--dot1) 20%,transparent 22%),radial-gradient(var(--dot2) 13%,transparent 15%),linear-gradient(180deg,var(--bg1),var(--bg2));
+background-size:56px 56px,56px 56px,100% 100%;background-position:0 0,28px 28px,0 0}
+main{width:100%;max-width:440px;position:relative;z-index:1}
+.hero{text-align:center;margin-top:4px}
+.orange{width:120px;height:120px;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 4px 0 rgba(0,0,0,.12))}
+@keyframes bob{50%{transform:translateY(-7px) rotate(4deg)}}
+h1{font-family:"Fredoka","Baloo 2","Nunito",system-ui,sans-serif;font-size:2.1rem;line-height:1.1;text-align:center;margin:2px 0 6px;color:var(--title);text-shadow:0 3px 0 var(--title-shadow);letter-spacing:.02em}
+.upd{text-align:center;color:var(--sub);font-weight:700;font-size:.85rem;margin:-12px 0 20px}
+.pill{display:table;margin:0 auto 14px;background:var(--card);color:var(--accent-dark);font-weight:800;font-size:.85rem;padding:5px 14px;border-radius:999px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill{color:var(--accent)}}
+:root[data-theme="dark"] .pill{color:var(--accent)}
+.awning{height:46px;border-radius:22px 22px 0 0;background:repeating-linear-gradient(90deg,var(--s1) 0 36px,var(--s2) 36px 72px);box-shadow:0 -2px 0 rgba(255,255,255,.25) inset}
+.scallop{height:18px;background-image:radial-gradient(circle at 18px 0,var(--s1) 17px,transparent 18px),radial-gradient(circle at 54px 0,var(--s2) 17px,transparent 18px);background-size:72px 18px;background-repeat:repeat-x;margin-bottom:-2px;position:relative;z-index:2}
+.card{background:var(--card);border-radius:0 0 26px 26px;padding:26px 20px 24px;margin-top:-18px;padding-top:34px;box-shadow:0 8px 0 rgba(0,0,0,.18)}
+.label{font-family:"Fredoka","Nunito",sans-serif;font-weight:600;text-align:center;margin-bottom:10px;color:var(--accent-dark);font-size:1.05rem}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .label{color:var(--accent)}}
+:root[data-theme="dark"] .label{color:var(--accent)}
+input{width:100%;box-sizing:border-box;font-size:1.3rem;font-weight:700;padding:13px 14px;border:3px dashed var(--border);border-radius:16px;background:var(--bg-in,transparent);color:var(--text);text-align:center;letter-spacing:.12em;font-family:inherit}
+input::placeholder{letter-spacing:0;font-weight:600;color:var(--muted);opacity:.7}
+input:focus{outline:none;border-style:solid;border-color:var(--accent)}
+button{width:100%;margin-top:14px;padding:13px;font-family:"Fredoka","Nunito",sans-serif;font-size:1.2rem;font-weight:600;border:0;border-radius:16px;background:var(--accent);color:var(--accent-text);cursor:pointer;box-shadow:0 5px 0 var(--accent-dark);transition:transform .08s,box-shadow .08s}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--accent-dark)}
+#result{margin-top:6px;text-align:center}
+.res{margin-top:18px;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.orange,.res{animation:none}}
+.name{font-size:1.05rem;font-weight:800}
+.nick{color:var(--muted);margin-bottom:14px;font-weight:700}
+.badge{width:158px;height:158px;border-radius:50%;margin:0 auto 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,#ffc766,#ff8c00 55%,#e06100);color:#fff;box-shadow:0 0 0 6px var(--card),0 0 0 10px var(--accent),0 8px 0 10px var(--accent-dark)}
+.total{font-family:"Fredoka","Nunito",sans-serif;font-size:3.6rem;font-weight:700;line-height:1;text-shadow:0 3px 0 rgba(150,60,0,.45)}
+.unit{font-weight:800;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.detail{font-size:.92rem;color:var(--muted);margin-top:18px}
+.msg{margin-top:10px;font-weight:800;color:var(--accent-dark)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .msg{color:var(--accent)}}
+:root[data-theme="dark"] .msg{color:var(--accent)}
+.err{color:var(--err);font-weight:700;margin-top:14px}
+.deco{position:fixed;opacity:.35;z-index:0;pointer-events:none}
+.deco svg{width:100%;height:auto;display:block}
+.d1{width:96px;left:-26px;top:34%;transform:rotate(-15deg)}.d2{width:130px;right:-40px;bottom:6%;transform:rotate(20deg)}
+</style>
+</head>
+<body>
+<main>
+<div class="hero"><svg class="orange" viewBox="0 0 140 140" aria-hidden="true"><defs><radialGradient id="g" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#ffc766"/><stop offset=".55" stop-color="#ff8c00"/><stop offset="1" stop-color="#d95f00"/></radialGradient></defs><ellipse cx="70" cy="132" rx="38" ry="6" fill="#000" opacity=".15"/><circle cx="70" cy="78" r="52" fill="url(#g)"/><g fill="#c45500" opacity=".35"><circle cx="50" cy="90" r="1.6"/><circle cx="62" cy="104" r="1.6"/><circle cx="88" cy="98" r="1.6"/><circle cx="96" cy="76" r="1.6"/><circle cx="78" cy="112" r="1.6"/><circle cx="44" cy="70" r="1.6"/><circle cx="104" cy="92" r="1.6"/></g><ellipse cx="48" cy="56" rx="10" ry="17" fill="#fff" opacity=".35" transform="rotate(35 48 56)"/><rect x="67" y="18" width="6" height="14" rx="3" fill="#6d4c1f"/><path d="M72 26c4-14 20-22 34-18-2 14-18 24-34 18z" fill="#43a047"/><path d="M72 26c10-6 20-10 34-18" stroke="#2e7d32" stroke-width="2" fill="none"/><path d="M68 28c-4-12-18-18-30-14 2 12 16 20 30 14z" fill="#66bb6a"/></svg></div>
+<h1>Happy Points<br>Checker</h1>
+<div class="pill">Class M.3/2 &middot; Data as of 2 Nov 2026</div>
+<div class="upd">Last updated: 18 Nov 2026</div>
+<div class="awning"></div><div class="scallop"></div>
+<div class="card">
+<div class="label">Enter your student ID</div>
+<input id="sid" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 679xxx" autocomplete="off" aria-label="Student ID">
+<button id="go">Check my points</button>
+<div id="result" aria-live="polite"></div>
+</div>
+</main>
+<div class="deco d1"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#ff8c00"/><circle cx="50" cy="50" r="40" fill="#fff1d6"/><g fill="#ffb74d"><path d="M50 50L50 14A36 36 0 0 1 81 32z"/><path d="M50 50L84 38A36 36 0 0 1 84 62z"/><path d="M50 50L81 68A36 36 0 0 1 50 86z"/><path d="M50 50L50 86A36 36 0 0 1 19 68z"/><path d="M50 50L16 62A36 36 0 0 1 16 38z"/><path d="M50 50L19 32A36 36 0 0 1 50 14z"/></g></svg></div><div class="deco d2"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#ff8c00"/><circle cx="50" cy="50" r="40" fill="#fff1d6"/><g fill="#ffb74d"><path d="M50 50L50 14A36 36 0 0 1 81 32z"/><path d="M50 50L84 38A36 36 0 0 1 84 62z"/><path d="M50 50L81 68A36 36 0 0 1 50 86z"/><path d="M50 50L50 86A36 36 0 0 1 19 68z"/><path d="M50 50L16 62A36 36 0 0 1 16 38z"/><path d="M50 50L19 32A36 36 0 0 1 50 14z"/></g></svg></div>
+<script>
+// [เลขที่, ชื่อเล่น, ชื่อ-นามสกุล, รหัสนักเรียน, [คะแนนแต่ละรายการ]]
+const DATA=[
+[1,"มาวิน","เด็กชายญาณกร เดชะตุ้ย","679287",[]],
+[2,"โมเช่","เด็กชายธูกัดซร มะโนผาบ","679289",[30]],
+[3,"ลัคกี้","เด็กชายฐานวีร์ ป้องกันทา","679290",[30]],
+[4,"ณฐ (นด)","เด็กชายณฐนน ณ ลำพูน","679293",[30]],
+[5,"น่าน","เด็กชายณัฏฐพัชร ดวงตา","679298",[30]],
+[6,"นัท","เด็กหญิงณัฏฐ์ธัญศา นิ่มอนุสสรณ์กุล","679299",[]],
+[7,"นางขวัญ","เด็กหญิงณัฏฐพร คำมา","679300",[]],
+[8,"เบล","เด็กชายณัฐกรณ์ อัครจินดา","679301",[30]],
+[9,"นิชา","เด็กหญิงณัฐณิชา อนุใจ","679302",[]],
+[10,"เอิน","เด็กหญิงณัฐณิชา สิติวรรณา","679303",[]],
+[11,"เฟิร์ส","เด็กชายณัฐพงศ์ ธนันชัย","679304",[30]],
+[12,"เมนี่","เด็กหญิงณิชมน บุญมี","679305",[]],
+[13,"king of math","เด็กชายตรัยภูมิ รัตน์จิรานุกุล","679306",[30]],
+[14,"คิน","เด็กชายเตชินท์ ใจคำ","679307",[300,30]],
+[15,"เติมเต็ม","เด็กชายเต็มปีติ ต้นรักษา","679308",[]],
+[16,"ปูนา","เด็กหญิงทอฝัน วงศ์โยโพ","679309",[300]],
+[17,"อิ๊งค์","นางสาวทักษพร อินทมนต์","679310",[300]],
+[18,"ใบเฟิรน","เด็กหญิงทักษพร สิทธิวงศ์","679311",[]],
+[19,"เพิร์ท","เด็กชายทัยกร ทองศิริ","679312",[30]],
+[20,"น้ำ","นางสาวทิพย์ธารา แก่นมณี","679313",[]],
+[21,"แทนไท","เด็กชายแทนไท กิจพรมมา","679314",[30]],
+[22,"แทนภูมิ","เด็กชายแทนภูมิ เจริญเลิศธนกิจ","679315",[300,30]],
+[23,"คุ้น","เด็กชายธนกฤต คุณพันธ์","679316",[]],
+[24,"นามิ","เด็กหญิงธนสลิล บุษบรรณ์","679317",[]],
+[25,"ไตตั้น","เด็กชายธนัท ตระกูลชุติเวช","679318",[30]],
+[26,"เตยหอม","เด็กหญิงธรณ์ธันย์ ปัทมวิฑูร","679319",[20,300]],
+[27,"ฟ้าใหม่","เด็กหญิงธรรมธิดา แบนใจวาง","679320",[30]],
+[28,"อิตคิว","เด็กชายธรรมรัตน์ เสาร์แก้ว","679321",[30]],
+[29,"นะโม","เด็กหญิงธฤตวัน แก้วกุลสี","679322",[]],
+[30,"วินนี่","เด็กชายธัชธรรม วีรชัยพงษ์","679323",[30]],
+[31,"ไอเดีย","เด็กหญิงธัญชนก ทองสุข","679324",[]],
+[32,"กุ้บกิ้บ","นางสาวธัญชนก กันธวรรณา","679325",[20]],
+[33,"ตั้น","เด็กหญิงธัญณิชา จันทร์คง","679326",[]],
+[34,"","เด็กหญิงพิชชา รักงาน","679327",[30]],
+[35,"พอเพียง","เด็กหญิงธัญวรัตน์ เข็มทอง","679328",[]],
+[36,"ใบบุญ","เด็กหญิงธัญวรัตน์ เม่งเอียด","679329",[]],
+[37,"เจอร์นอล","เด็กชายธันยปรัชญ์ วงศ์อภัย","679330",[30]],
+[38,"เก้า","เด็กชายธัมมชาต อริยธรรมนิตย์","679331",[30]],
+[39,"ของขวัญ","นางสาวธิชดาภา ดีวงศ์สาย","679332",[10,30]],
+[40,"ชิวชิว","เด็กหญิงนงนภัส จักร์ปั่น","679336",[]],
+[41,"อิ่ม","นางสาวนภัษร จันทะไข่สร","679338",[300]],
+[42,"ใบบุญ","เด็กหญิงนรมน คำเหลือง","679339",[30]],
+[43,"ต้นข้าว","นางสาวนรมน สุศำ","679340",[10,30]],
+[44,"","เด็กหญิงนลิญา วังษัยกูล","679343",[]],
+[45,"เวสป้า","เด็กหญิงนันท์นภัส ไวเกษตรกรณ์","679344",[]]
+];
+const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function check(){
+  const id=$("sid").value.trim().replace(/[๐-๙]/g,d=>"๐๑๒๓๔๕๖๗๘๙".indexOf(d));
+  const out=$("result");
+  if(!id){out.innerHTML='<div class="err">Please enter your student ID.</div>';return}
+  const s=DATA.find(r=>r[3]===id);
+  if(!s){out.innerHTML='<div class="err">Student ID not found. Please check and try again.</div>';return}
+  const total=s[4].reduce((a,b)=>a+b,0);
+  const msg=total>=300?"Super juicy! Great job!":total>0?"Nice work, keep squeezing out those points!":"Your orange is just getting started. Let's earn some points!";
+  out.innerHTML='<div class="res">'+
+    '<div class="name">'+esc(s[2])+'</div>'+
+    '<div class="nick">No. '+s[0]+(s[1]?' &middot; '+esc(s[1]):'')+'</div>'+
+    '<div class="badge"><div class="total">'+total+'</div><div class="unit">Happy Points</div></div>'+
+    '<div class="detail">'+(s[4].length?'Points earned: '+s[4].join(' + '):'No points yet')+'</div>'+
+    '<div class="msg">'+msg+'</div></div>';
+}
+$("go").addEventListener("click",check);
+$("sid").addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+</script>
+</body>
+</html>
